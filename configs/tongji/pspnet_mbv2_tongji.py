@@ -4,7 +4,7 @@ _base_ = [
 ]
 
 crop_size = (512, 512)
-data_root = '/root/autodl-tmp/segment/data/tongji'
+data_root = 'D:/wx/PycharmProjects/datasets/data-tongji/data/tongji'
 
 metainfo = dict(
     classes=(
@@ -84,7 +84,7 @@ test_dataloader = val_dataloader
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
 test_evaluator = val_evaluator
 
-norm_cfg = dict(type='SyncBN', requires_grad=True)
+norm_cfg = dict(type='BN', requires_grad=True)
 
 data_preprocessor = dict(
     type='SegDataPreProcessor',
@@ -99,7 +99,7 @@ data_preprocessor = dict(
 model = dict(
     type='EncoderDecoder',
     data_preprocessor=data_preprocessor,
-    pretrained='open-mmlab://mobilenet_v2',
+    pretrained=None,
     backbone=dict(
         type='MobileNetV2',
         widen_factor=1.0,
