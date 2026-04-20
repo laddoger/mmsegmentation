@@ -4,6 +4,13 @@ _base_ = [
 ]
 
 crop_size = (512, 512)
+
+env_cfg = dict(
+    cudnn_benchmark=True,
+    mp_cfg=dict(mp_start_method='spawn', opencv_num_threads=0),
+    dist_cfg=dict(backend='gloo')
+)
+
 data_root = 'D:/wx/PycharmProjects/datasets/data-tongji/data/tongji'
 
 metainfo = dict(
@@ -47,11 +54,13 @@ test_pipeline = [
 
 train_dataloader = dict(
     batch_size=2,
-    num_workers=2,
-    persistent_workers=True,
+    num_workers=0,
+    persistent_workers=False,
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
         type='BaseSegDataset',
+        img_suffix='.jpg',
+        seg_map_suffix='.png',
         data_root=data_root,
         data_prefix=dict(
             img_path='images/train',
@@ -64,11 +73,13 @@ train_dataloader = dict(
 
 val_dataloader = dict(
     batch_size=1,
-    num_workers=2,
-    persistent_workers=True,
+    num_workers=0,
+    persistent_workers=False,
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type='BaseSegDataset',
+        img_suffix='.jpg',
+        seg_map_suffix='.png',
         data_root=data_root,
         data_prefix=dict(
             img_path='images/val',
